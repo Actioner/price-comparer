@@ -7,7 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , communication = require('./comparer/communication');
 
 var app = express();
 
@@ -29,7 +30,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/', function (req, res){
+    routes.index(req, res, communication)
+});
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
